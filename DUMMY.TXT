@@ -1,0 +1,37 @@
+Problem Requirements:
+API Functionality:
+User Management: Create endpoints for user registration, login, and profile management (CRUD operations).
+Blog Posts: Allow users to create, read, update, and delete blog posts.
+Comments: Enable users to add, view, and delete comments on blog posts.
+Data Storage:
+Use any SQL or NoSQL database of choice for storing data.
+Ensure proper relational structure if using SQL (e.g., users, posts, comments tables).
+Authentication:
+Implement JWT (JSON Web Tokens) based authentication.
+Protected routes: Users must be logged in to create, edit, or delete their blog posts or comments.
+TypeScript/JavaScript Best Practices:
+[OPTIONAL]: Use TypeScript's strong typing system effectively (e.g., interfaces or types for API responses, request objects).
+Handle errors and validate incoming data.
+Documentation:
+Provide a README file with clear instructions on how to set up and run the application.
+Document the API endpoints (consider using tools like Swagger).
+Bonus:
+Implement pagination for the blog posts list.
+Add a simple rate limiter to prevent abuse of the API.
+Write unit tests for various components of the application.
+Integration tests for testing the API endpoints.
+Evaluation Criteria:
+Code Quality: Clean, readable, and well-organized code.
+Error Handling: Robust error handling and input validation.
+Documentation: Clear and thorough documentation.
+Bonus Features: Implementation of additional features like pagination, rate limiting, unit tests and integration tests.
+
+
+async getUsers(
+    @Query('page', ParseIntPipe) page: number = 1,
+    @Query('pageSize', ParseIntPipe) pageSize: number = 10,
+  ): Promise<PaginationResponse<Prisma.User[]>> {
+    const users = await this.prismaService.user.findMany(); // Assuming you have a PrismaService with a method to fetch users
+    return paginate(users, page, pageSize, 'Users fetched successfully');
+  }
+}
