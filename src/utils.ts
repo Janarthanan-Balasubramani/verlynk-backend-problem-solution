@@ -13,7 +13,6 @@ export interface PaginatedResponse<T> {
   data: T[];
 }
 
-
 export const paginationResponse = <T>(
   page: number,
   itemsPerPage: number,
