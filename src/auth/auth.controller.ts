@@ -7,7 +7,16 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post()
-  create(@Body() createAuthDto: AuthDto) {
-    return this.authService.create(createAuthDto);
+  /**
+   *@function :Login
+   *
+   * @description : allows users to login in the application
+   *
+   * @param type(createAuthDto) email and password in body
+   * @returns
+   *  user details with token
+   */
+  Login(@Body() createAuthDto: AuthDto) {
+    return this.authService.Login(createAuthDto);
   }
 }

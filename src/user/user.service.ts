@@ -13,19 +13,31 @@ import { Prisma } from '@prisma/client';
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
+  /**
+   *@function :create
+   *
+   * @description : register's new user details
+   *
+   * @param createUserDto(CreateUserDto) :details of the user going to be created like email , firstName,lastName,password
+   * @returns success message or error message if any
+   */
   async create(createUserDto: CreateUserDto): Promise<CommonResponse<null>> {
     try {
+      // checks if the email already exist with another user
       const isEmailAlreadyExist = await this.prisma.user.findUnique({
         where: {
           email: createUserDto.email,
         },
       });
+      // if email exist with another user we are throwing error
       if (isEmailAlreadyExist) {
         throw new BadRequestException('User email have been already taken');
       }
 
+      // hashing password for better security
       const hashedPassword = await hashPassword(createUserDto.password);
 
+      // creating the user
       await this.prisma.user.create({
         data: {
           email: createUserDto.email,
@@ -42,6 +54,15 @@ export class UserService {
     }
   }
 
+  /**
+   *@function :findAll
+   *
+   * @description : finds all the user details which have been created by the user
+  
+   * @param page:number for pagination purpose
+   * @param search searching an specific user
+   * @returns returns pagination response of the users details
+   */
   async findAll(
     page: number,
     search: string,
@@ -96,21 +117,31 @@ export class UserService {
       throw err;
     }
   }
-
+  /**
+   *@function :update
+   *
+   * @description : updates the user  details like firstName , lastName ,email
+   *
+   * @param updateUserDto(UpdateUserDto) id with user details to be updated
+  
+   * @returns success message or throws error
+   */
   async updateUser(
     updateUserDto: UpdateUserDto,
   ): Promise<CommonResponse<null>> {
     try {
+      // checking if user Exist with the id
       const isUserWithIdExist = await this.prisma.user.findUnique({
         where: {
           id: updateUserDto.id,
         },
       });
-
+      // throws error if user  not exist with the id
       if (!isUserWithIdExist) {
         throw new BadRequestException("This user doesn't exist");
       }
 
+      // checking if user email which is going to be updated is already taken by another user
       const isEmailExistWithAnotherUser = await this.prisma.user.findFirst({
         where: {
           id: {
@@ -120,6 +151,7 @@ export class UserService {
         },
       });
 
+      // if email is with another user means we are throwing error
       if (isEmailExistWithAnotherUser) {
         throw new BadRequestException(
           'This email is already been taken with another user',
@@ -144,22 +176,37 @@ export class UserService {
     }
   }
 
+  /**
+   *@function :remove
+   *
+   * @description : deletes the user details
+   *
+   * @param  id(number) :id of the user going to be deleted
+   * @returns
+   *   success message or throws error
+   */
   async remove(id: number): Promise<CommonResponse<null>> {
     try {
+      // checking if user Exist with the id
+
       const isUserWithIdExist = await this.prisma.user.findUnique({
         where: {
           id,
         },
       });
 
+      // if user does not exist with the id we are throwing error
+
       if (!isUserWithIdExist) {
         throw new BadRequestException("This user doesn't exist");
       }
 
+      // if user is already deleted means we are throwing error
       if (isUserWithIdExist.isActive == false) {
         throw new BadRequestException('This user already been deleted');
       }
 
+      //soft deleting the user
       await this.prisma.user.update({
         where: {
           id: id,
