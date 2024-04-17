@@ -1,6 +1,7 @@
 This is an readme file of verlynk back end problem solution repository
 
 For testing  Code 
+npm i command is to be used for installing dependecies 
 
 npx prisma generate to generate the db and start using the database
 
@@ -16,4 +17,5 @@ Rate limiting implemented for one api 10 requests can be made in 1 minute
 pagination and jwt based authentication also implemented for all routes except login and user register 
 
 user can update ,create ,delete posts and comments 
+ Sqlite db have been used 
 
