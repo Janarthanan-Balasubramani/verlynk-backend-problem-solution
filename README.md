@@ -16,6 +16,6 @@ Rate limiting implemented for one api 10 requests can be made in 1 minute
 
 pagination and jwt based authentication also implemented for all routes except login and user register 
 
-user can update ,create ,delete posts and comments 
+user can update ,create ,delete and view posts and comments  user can also delete the user and update the  user and also view the users 
  Sqlite db have been used 
 
