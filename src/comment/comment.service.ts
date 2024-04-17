@@ -14,6 +14,15 @@ export class CommentService {
     createCommentDto: CreateCommentDto,
   ): Promise<CommonResponse<null>> {
     try {
+    const   isPostAlreadyExist = await this.prisma.post.findUnique({
+        where:{
+          id:createCommentDto.postId
+        }
+      })
+
+      if(!isPostAlreadyExist){
+        throw new BadRequestException("Post doesn't exist so comment can't be posted ")
+      }
       await this.prisma.comment.create({
         data: {
           postId: createCommentDto.postId,

@@ -75,6 +75,10 @@ export class UserService {
         take: itemsPerPage,
         select: {
           id: true,
+          firstName:true,
+          lastName:true,
+           email:true,
+           isActive:true
         },
       });
 
@@ -117,10 +121,8 @@ export class UserService {
       });
 
       if (isEmailExistWithAnotherUser) {
-        new BadRequestException(
-          'This email is already been taken with another user',
-        );
-
+       throw   new BadRequestException('This email is already been taken with another user');
+      }
         await this.prisma.user.update({
           where: {
             id: updateUserDto.id,
@@ -135,7 +137,7 @@ export class UserService {
         return {
           message: 'The user details have been successfully updated',
         };
-      }
+      
     } catch (err) {
       throw err;
     }
