@@ -26,8 +26,6 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Get()
   findAll(@Query('page') page: number, @Query('search') search: string) {
-    console.log(page);
-    console.log(search);
     return this.userService.findAll(page, search);
   }
   @UseGuards(AuthGuard)

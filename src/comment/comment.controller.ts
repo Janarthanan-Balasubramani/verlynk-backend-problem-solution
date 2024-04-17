@@ -31,7 +31,6 @@ export class CommentController {
   @Get()
   findAll(@Query('page') page: number, @Req() req) {
     const authorId = req.user.userId;
-
     return this.commentService.findAll(authorId, page);
   }
 

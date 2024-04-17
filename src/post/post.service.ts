@@ -22,7 +22,7 @@ export class PostService {
         },
       });
       return {
-        message: 'User created successfully',
+        message: 'Post created successfully',
       };
     } catch (err) {
       throw err;
